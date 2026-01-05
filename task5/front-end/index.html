@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Docker Compose App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f8ff;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .api-response {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Docker Compose Application</h1>
+        <p>This application runs with Docker Compose!</p>
+        <p>Backend (Flask API) and Frontend (Nginx) are running in separate containers.</p>
+        
+        <div class="api-response" id="apiResponse">
+            Click the button to test the API...
+        </div>
+        
+        <button onclick="testAPI()">Test Backend API</button>
+        
+        <div style="margin-top: 30px;">
+            <h3>Container Information:</h3>
+            <p><strong>Frontend:</strong> Nginx on port 9000</p>
+            <p><strong>Backend:</strong> Flask API on port 5252</p>
+            <p><strong>Connected via:</strong> Docker Compose network</p>
+        </div>
+    </div>
+    
+<script>
+    async function testAPI() {
+        const responseDiv = document.getElementById('apiResponse');
+        responseDiv.innerHTML = 'Testing API connection through proxy...';
+        
+        try {
+            // Proxy server vasitəsilə API-yə sorğu göndəririk
+            const response = await fetch('/api/hello');
+            if (response.ok) {
+                const data = await response.json();
+                responseDiv.innerHTML = 'SUCCESS: Proxy API Response: ' + JSON.stringify(data, null, 2);
+            } else {
+                responseDiv.innerHTML = 'ERROR: Proxy API Error: ' + response.status;
+            }
+        } catch (error) {
+            responseDiv.innerHTML = 'ERROR: Proxy Connection failed: ' + error.message;
+        }
+    }
+    
+    // Auto-test on page load
+    window.onload = testAPI;
+</script>
